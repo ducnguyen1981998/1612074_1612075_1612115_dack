@@ -1,0 +1,5 @@
+﻿insert into chuyenmuc(idCM,tenCM) values(1,'Bóng đá');
+insert into chuyenmuc(idCM,tenCM) values(2,'Kinh doanh');
+insert into chuyenmuc(idCM,tenCM) values(3,'Công nghệ');
+insert into chuyenmuc(idCM,tenCM) values(4,'Showbiz');
+insert into chuyenmuc(idCM,tenCM) values(5,'Ẩm thực');
