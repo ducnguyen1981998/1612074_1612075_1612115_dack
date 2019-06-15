@@ -11,7 +11,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <label for="">Tên Loại tin:</label>
+                                    <label for="">Tên chuyên cề:</label>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="themten" value="" placeholder="Nhập tên thể loại">
@@ -19,14 +19,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="controlSelect">Lựa chọn thể loại:</label>
+                                    <label for="controlSelect">Lựa chọn chuyên mục:</label>
                                 </td>
                                 <td>
                                     <div class="form-group">
                                         <select name="theloai" class="form-control" id="controlSelect">
-                                            <option value="">---Chọn thể loại---</option>
+                                            <option value="">---Chọn chuyên mục---</option>
                                             <% theloai.forEach(function (tl){ %>
-                                                <option value="<%=tl.idtheloai%>"><%=tl.tentheloai%></option>
+                                                <option value="<%=tl.idcm%>"><%=tl.tencm%></option>
                                             <% }) %>
                                         </select>
                                     </div>

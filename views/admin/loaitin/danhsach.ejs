@@ -7,7 +7,7 @@
                 <div id="page-wrapper">
                     <div class="row">
                         <div class="col-md-12" align="center">
-                            <h1 class="page-header">Loại tin</h1>
+                            <h1 class="page-header">QUẢN LÝ CHUYÊN ĐỀ</h1>
                         </div>
                     </div>
 
@@ -38,8 +38,8 @@
                                         <thead>
                                             <tr>
                                                 <th>STT</th>
-                                                <th>Tên Loại Tin</th>
-                                                <th>Tên Thể Loại</th>
+                                                <th>Tên Chuyên Đề</th>
+                                                <th>Tên Chuyên Mục</th>
                                                 <th>Sửa</th>
                                                 <th>Xóa</th>
                                             </tr>
@@ -48,21 +48,21 @@
                                             <% loaitin.forEach(function (i){ %>
                                                 <tr class="gradeC">
                                                     <td>
-                                                        <%=i.idloaitin%>
+                                                        <%=i.idcd%>
                                                     </td>
                                                     <td>
-                                                        <%=i.tenloaitin%>
+                                                        <%=i.tencd%>
                                                     </td>
                                                     <td>
-                                                        <%=i.tentheloai%>
+                                                        <%=i.tencm%>
                                                     </td>
                                                     <td>
                                                         <%include sua%>
-                                                        <button class="btn-info btn" data-toggle="modal" data-target="#myModal<%=i.idloaitin%>"><i class="fa fa-edit" ></i></button>
+                                                        <button class="btn-info btn" data-toggle="modal" data-target="#myModal<%=i.idcd%>"><i class="fa fa-edit" ></i></button>
                                                     </td>
                                                     <td class="center">
                                                         <%include xoa%>
-                                                        <button class="btn-danger btn" data-toggle="modal" data-target="#xoaModal<%=i.idloaitin%>"><i class="fa fa-trash-o" ></i></button>
+                                                        <button class="btn-danger btn" data-toggle="modal" data-target="#xoaModal<%=i.idcd%>"><i class="fa fa-trash-o" ></i></button>
                                                     </td>
                                                 </tr>
                                                 <% }) %>

@@ -7,7 +7,7 @@
         <div id="page-wrapper">
             <div class="row">
             <div class="col-md-12" align="center">
-                <h1 class="page-header">Tin Tức</h1>
+                <h1 class="page-header"> Quản lý Bài viết</h1>
             </div>
             </div>
             <% if (error.length > 0) { %>
@@ -54,7 +54,7 @@
                                     <% baiviet.forEach(function (i){ %>
                                         <tr class="gradeC">
                                             <td>
-                                                <%=i.idbaiviet%>
+                                                <%=i.idbv%>
                                             </td>
                                             <td>
                                                 <div class="title">
@@ -72,21 +72,21 @@
                                             <td>
                                                 <div>
                                                     <div class="thumbnail" href="#"><img src="/Uploads/Images/<%=i.urlanh%>" width="45" height="45">
-                                                        <span><img src="/Uploads/Images/<%=i.urlanh%>" with="70" height="70" title="Ảnh <%=i.urlanh%>"></span></div>
+                                                        <span><img src="/Uploads/Images/<%=i.hinhanh%>" with="70" height="70" title="Ảnh <%=i.hinhanh%>"></span></div>
                                                 </div>
-                                                
+
                                             </td>
                                             <td>
                                                 <%=i.luotxem%>
                                             </td>
                                             <td>
-                                                <%=i.tenloaitin%>
+                                                <%=i.tencd%>
                                             </td>
                                             <td>
                                                 <div>
-                                                    <button class="btn-primary btn" data-toggle="modal" data-target="#chiTiet<%=i.idbaiviet%>"><i class="fa fa-eye" ></i></button>
+                                                    <button class="btn-primary btn" data-toggle="modal" data-target="#chiTiet<%=i.idbv%>"><i class="fa fa-eye" ></i></button>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="chiTiet<%=i.idbaiviet%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="chiTiet<%=i.idbv%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -97,7 +97,7 @@
                                                                     <%- i.noidung%>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                  
+
                                                                 </div>
                                                             </div>
                                                             <!-- /.modal-content -->

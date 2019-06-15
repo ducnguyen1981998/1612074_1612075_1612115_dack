@@ -29,8 +29,8 @@ router.get('/danhsach', adminIsLoggedIn, function(req, res, next) {
         let error = req.flash('error');
         let success = req.flash('success')
         try {
-            const theloai = await client.query('SELECT * FROM theloai')
-            const result = await client.query('SELECT * FROM loaitin l, theloai t WHERE l.idtheloai = t.idtheloai')
+            const theloai = await client.query('SELECT * FROM chuyenmuc')
+            const result = await client.query('SELECT * FROM chuyende l, chuyenmuc t WHERE l.idcm = t.idcm')
             res.render('admin/loaitin/danhsach',{
                 loaitin: result.rows,
                 theloai: theloai.rows,
@@ -66,7 +66,7 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
         (async() => {
             const client = await pool.connect()
             try {
-                await client.query("UPDATE loaitin SET tenloaitin = '"+ ten +"', idtheloai = '" + idtheloai + "' WHERE idloaitin = " + id)
+                await client.query("UPDATE chuyende SET tencd = '"+ ten +"', idcm = '" + idtheloai + "' WHERE idcd = " + id)
                 req.flash('success', 'Sửa thành công');
                 res.redirect("/admin/loaitin/danhsach")
             } finally {
@@ -95,9 +95,9 @@ router.post('/them', adminIsLoggedIn, function(req, res, next) {
         (async() => {
             const client = await pool.connect()
             try{
-                const result = await client.query('SELECT MAX(idloaitin) FROM loaitin')
+                const result = await client.query('SELECT MAX(idcd) FROM chuyende')
                 // console.log(result.rows[0].max)
-                await client.query("INSERT INTO loaitin(idloaitin, tenloaitin, idtheloai) VALUES("+ result.rows[0].max +"+1, '" + ten + "', '"+ idtheloai +"')")
+                await client.query("INSERT INTO chuyende(idcd, tencd, idcm) VALUES("+ result.rows[0].max +"+1, '" + ten + "', '"+ idtheloai +"')")
                 req.flash('success', 'Thêm thành công');
                 res.redirect("/admin/loaitin/danhsach")
             } finally{
@@ -112,7 +112,7 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
     (async() => {
         const client = await pool.connect()
         try {
-            await client.query("DELETE FROM loaitin WHERE idloaitin = " + id)
+            await client.query("DELETE FROM chuyende WHERE idcd = " + id)
             req.flash('success', 'Xóa thành công')
             res.redirect("/admin/loaitin/danhsach")
         } finally {
@@ -122,4 +122,3 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
 });
 
 module.exports = router
-

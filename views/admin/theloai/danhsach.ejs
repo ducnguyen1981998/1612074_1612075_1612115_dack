@@ -7,10 +7,10 @@
                 <div id="page-wrapper">
                     <div class="row">
                         <div class="col-md-12" align="center">
-                            <h1 class="page-header">Thể Loại</h1>
+                            <h1 class="page-header">DANH SÁCH CHUYÊN MỤC</h1>
                         </div>
                     </div>
-                    
+
                     <% if (error.length > 0) { %>
                        <div class="alert alert-danger"><%= error %></div>
                     <% } else if(success.length > 0){ %>
@@ -30,7 +30,7 @@
                         <div class="col-lg-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Danh Sách
+                                    <!-- Danh Sách -->
                                 </div>
                                 <!-- /.panel-heading -->
                                 <div class="panel-body">
@@ -38,7 +38,7 @@
                                         <thead>
                                             <tr>
                                                 <th>STT</th>
-                                                <th>Tên Thể Loại</th>
+                                                <th>Tên Chuyên mục</th>
                                                 <th>Sửa</th>
                                                 <th>Xóa</th>
                                             </tr>
@@ -47,18 +47,18 @@
                                             <% theloai.forEach(function (i){ %>
                                                 <tr class="gradeC">
                                                     <td>
-                                                        <%=i.idtheloai%>
+                                                        <%=i.idcm%>
                                                     </td>
                                                     <td>
-                                                        <%=i.tentheloai%>
+                                                        <%=i.tencm%>
                                                     </td>
                                                     <td>
                                                         <%include sua%>
-                                                            <button class="btn-info btn" data-toggle="modal" data-target="#myModal<%=i.idtheloai%>"><i class="fa fa-edit" ></i></button>
+                                                            <button class="btn-info btn" data-toggle="modal" data-target="#myModal<%=i.idcm%>"><i class="fa fa-edit" ></i></button>
                                                     </td>
                                                     <td class="center">
                                                         <%include xoa%>
-                                                        <button class="btn-danger btn" data-toggle="modal" data-target="#xoaModal<%=i.idtheloai%>"><i class="fa fa-trash-o" ></i></button>
+                                                        <button class="btn-danger btn" data-toggle="modal" data-target="#xoaModal<%=i.idcm%>"><i class="fa fa-trash-o" ></i></button>
                                                     </td>
                                                 </tr>
                                                 <% }) %>

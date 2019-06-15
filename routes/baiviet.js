@@ -68,8 +68,8 @@ router.get('/danhsach', adminIsLoggedIn, function(req, res, next) {
         let error = req.flash('error');
         let success = req.flash('success')
         try {
-            const loaitin = await client.query('SELECT * FROM loaitin')
-            const result = await client.query('SELECT * FROM baiviet bv, loaitin lt WHERE bv.idloaitin = lt.idloaitin')
+            const loaitin = await client.query('SELECT * FROM chuyende')
+            const result = await client.query('SELECT * FROM baiviet bv, chuyende cd WHERE bv.idcdd = cd.idcd')
             res.render('admin/baiviet/danhsach',{
                 baiviet: result.rows,
                 loaitin: loaitin.rows,
@@ -91,8 +91,8 @@ router.get('/them', adminIsLoggedIn, function(req, res, next){
         let success = req.flash('success')
 
         try {
-            const theloai = await client.query('SELECT * FROM theloai')
-            const loaitin = await client.query('SELECT * FROM loaitin')
+            const theloai = await client.query('SELECT * FROM chuyenmuc')
+            const loaitin = await client.query('SELECT * FROM chuyende')
             res.render('admin/baiviet/them',{
                 theloai: theloai.rows,
                 loaitin: loaitin.rows,
@@ -142,7 +142,7 @@ router.post('/thembv', adminIsLoggedIn, function(req, res, next) {
                     const client = await pool.connect()
                     try{
                         const result = await client.query('SELECT MAX(idbaiviet) FROM baiviet')
-                        await client.query("INSERT INTO baiviet(idbaiviet, tacgia, tieude, tomtat, noidung, urlanh, luotxem, ngaydang, idloaitin) VALUES("+ result.rows[0].max +"+1, '" + tacgia + "', '" + tieude + "', '" + tomtat + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ moment().format() +"', '" + idloaitin + "')")
+                        await client.query("INSERT INTO baiviet(idbaiviet, tieude, noidung, hinhanh, luotxem, ngaydang, idcdd) VALUES("+ result.rows[0].max +"+1, '" + tieude + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ moment().format() +"', '" + idloaitin + "')")
                         req.flash('success', 'Thêm thành công');
                         res.redirect("/admin/baiviet/them");
                     } finally{
@@ -165,9 +165,9 @@ router.get('/sua/:id', adminIsLoggedIn, function(req, res, next){
         let success = req.flash('success')
 
         try {
-            const theloai = await client.query('SELECT * FROM theloai')
-            const loaitin = await client.query('SELECT * FROM loaitin')
-            const result = await client.query('SELECT * FROM  baiviet bv, loaitin lt WHERE bv.idloaitin = lt.idloaitin AND bv.idbaiviet = ' + req.params.id)
+            const theloai = await client.query('SELECT * FROM chuyenmuc')
+            const loaitin = await client.query('SELECT * FROM chuyende')
+            const result = await client.query('SELECT * FROM  baiviet bv, chuyende lt WHERE bv.idcdd = lt.idcd AND bv.idbv = ' + req.params.id)
             res.render('admin/baiviet/sua',{
                 theloai: theloai.rows,
                 loaitin: loaitin.rows,
@@ -217,7 +217,7 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
                     try{
                        // const img = await client.query("SELECT urlanh FROM baiviet WHERE idbaiviet = " + id)
                        //  urlanh = img.rows[0].urlanh
-                        await client.query("UPDATE baiviet SET tacgia = '"+ tacgia +"', tieude = '" + tieude + "', tomtat = '" + tomtat + "', noidung = '" + noidung + "', idloaitin = '" + idloaitin + "' WHERE idbaiviet = " + id)
+                        await client.query("UPDATE baiviet SET  tieude = '" + tieude + "', noidung = '" + noidung + "', idcdd = '" + idloaitin + "' WHERE idbv = " + id)
                         req.flash('success', 'Sửa thành công');
                         res.redirect("/admin/baiviet/danhsach");
                     } finally{
@@ -239,7 +239,7 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
                 (async() => {
                     const client = await pool.connect()
                     try{
-                       const img = await client.query("SELECT urlanh FROM baiviet WHERE idbaiviet = " + id)
+                       const img = await client.query("SELECT hinhanh FROM baiviet WHERE idbv = " + id)
                         urlanh = img.rows[0].urlanh
                         console.log(urlanh);
                         if(urlanh != null){
@@ -248,7 +248,7 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
                                 console.log('successfully deleted');
                             });
                         }
-                        await client.query("UPDATE baiviet SET tacgia = '"+ tacgia +"', tieude = '" + tieude + "', tomtat = '" + tomtat + "', noidung = '" + noidung + "', urlanh = '" + req.file.filename + "', idloaitin = '" + idloaitin + "' WHERE idbaiviet = " + id)
+                        await client.query("UPDATE baiviet SET  tieude = '" + tieude + "',  noidung = '" + noidung + "', hinhanh = '" + req.file.filename + "', idcdd = '" + idcdd + "' WHERE idbv = " + id)
                         req.flash('success', 'Sửa thành công');
                         res.redirect("/admin/baiviet/danhsach");
                     } finally{
@@ -269,7 +269,7 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
     (async() => {
         const client = await pool.connect()
         try {
-            const img = await client.query("SELECT urlanh FROM baiviet WHERE idbaiviet = " + id)
+            const img = await client.query("SELECT hinhanh FROM baiviet WHERE idbv = " + id)
             urlanh = img.rows[0].urlanh
             console.log(urlanh);
             if(urlanh != null){
@@ -278,7 +278,7 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
                     console.log('successfully deleted');
                 });
             }
-            await client.query("DELETE FROM baiviet WHERE idbaiviet = " + id)
+            await client.query("DELETE FROM baiviet WHERE idbv = " + id)
             req.flash('success', 'Xóa thành công')
             res.redirect("/admin/baiviet/danhsach")
         } finally {
@@ -288,4 +288,3 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
 });
 
 module.exports = router
-

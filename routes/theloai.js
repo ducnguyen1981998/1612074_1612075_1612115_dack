@@ -29,7 +29,7 @@ router.get('/danhsach', adminIsLoggedIn, function(req, res, next) {
         let error = req.flash('error');
         let success = req.flash('success')
         try {
-            const result = await client.query('SELECT * FROM theloai')
+            const result = await client.query('SELECT * FROM chuyenmuc')
             res.render('admin/theloai/danhsach',{
                 theloai: result.rows,
                 title: 'News_TTB Website',
@@ -63,7 +63,7 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
             const client = await pool.connect()
             try {
                 // const result = await client.query('SELECT * FROM theloai WHERE idtheloai =' + id)
-                await client.query("UPDATE theloai SET tentheloai = '" + ten + "' WHERE idtheloai = " + id)
+                await client.query("UPDATE chuyenmuc SET tencm = '" + ten + "' WHERE idcm = " + id)
                 req.flash('success', 'Sửa thành công');
                 res.redirect("/admin/theloai/danhsach")
             } finally {
@@ -90,9 +90,9 @@ router.post('/them', adminIsLoggedIn, function(req, res, next) {
         (async() => {
             const client = await pool.connect()
             try{
-                const result = await client.query('SELECT MAX(idtheloai) FROM theloai')
+                const result = await client.query('SELECT MAX(idcm) FROM chuyenmuc')
                 // console.log(result.rows[0].max)
-                await client.query("INSERT INTO theloai(idtheloai, tentheloai) VALUES("+ result.rows[0].max +"+1, '" + ten + "')")
+                await client.query("INSERT INTO chuyenmuc(idcm, tencm) VALUES("+ result.rows[0].max +"+1, '" + ten + "')")
                 req.flash('success', 'Thêm thành công');
                 res.redirect("/admin/theloai/danhsach")
             } finally{
@@ -108,7 +108,9 @@ router.post('/xoa/:id', adminIsLoggedIn, function(req, res, next) {
     (async() => {
         const client = await pool.connect()
         try {
-            await client.query("DELETE FROM theloai WHERE idtheloai = '" + id +"';  DELETE FROM loaitin WHERE idtheloai = '" + id +"'")
+            await client.query("UPDATE baiviet SET idcdd=null FROM chuyenmuc,chuyende WHERE chuyenmuc.idcm=chuyende.idcm AND chuyende.idcd=baiviet.idcdd AND chuyenmuc.idcm="+id)
+            await client.query("UPDATE chuyende SET idcm=null FROM chuyenmuc WHERE chuyende.idcm = chuyenmuc.idcm AND chuyenmuc.idcm="+id)
+            await client.query("DELETE FROM chuyenmuc WHERE idcm = '" + id +"';  DELETE FROM chuyenmuc WHERE idcm = '" + id +"'")
             req.flash('success', 'Xóa thành công')
             res.redirect("/admin/theloai/danhsach")
         } finally {
