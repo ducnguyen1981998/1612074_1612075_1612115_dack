@@ -48,7 +48,7 @@
                 <nav class="classy-navbar justify-content-between" id="magNav">
 
                     <!-- Nav brand -->
-                     <a href="index.html" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                     <a href="#" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
 
                     <!-- Navbar Toggler -->
                     <div class="classy-navbar-toggler">
@@ -92,9 +92,47 @@
                                 </form>
                             </div>
                             <!-- Login -->
-                            <a href="/login" class="login-btn"><i class="fa fa-user" aria-hidden="true"></i></a>
+                            <% if(logged){%>
+                              <!-- <form action="/dang-xuat" method="post">
+                                  <input type="search" name="top-search" id="topSearch" placeholder="Nhập và tìm kiếm ở đây...">
+                                  <button type="submit" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                              </form> -->
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> <%= user.tenthanhvien %> <i class="fa fa-caret-down"></i></a>
+                              <ul id="login-dp" class="dropdown-menu">
+                                  <li>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div style="text-align: center;"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Thông tin tài khoản</b></div>
+                                              <br>
+                                              <table align="center">
+                                                  <tr>
+                                                      <td><i class="fa fa-envelope fa" aria-hidden="true"></i></td>
+                                                      <td>&nbsp&nbsp
+                                                          <%= user.email %>
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td><i class="fa fa-pencil" aria-hidden="true"></i></td>
+                                                      <td>&nbsp&nbsp
+                                                          <%= user.tenthanhvien %>
+                                                      </td>
+                                                  </tr>
+                                              </table>
+                                          </div>
+                                          <div class="bottom text-center">
+                                              <div class="social-buttons">
+                                                  <a href="#" class="btn btn-setting"><i class="fa fa-cog"></i> Setting</a>
+                                                  <a href="/dang-xuat" class="btn btn-logout"><i class="fa fa-power-off"></i> Logout</a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </li>
+                              </ul>
+                            <%} else{%>
+                              <a href="/login" class="login-btn"><i class="fa fa-user" aria-hidden="true"></i></a>
+                            <%}%>
 
-                            
+
 
                             <!-- Submit Video -->
                             <a href="#" class="submit-video"><span><i class="fa fa-cloud-upload"></i></span> <span class="video-text">Submit Video</span></a>

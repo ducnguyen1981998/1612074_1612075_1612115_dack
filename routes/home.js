@@ -6,7 +6,7 @@ const passport = require('passport');
 
 router.post('/dang-nhap', passport.authenticate('local-dang-nhap', {
         successRedirect : '/',
-        failureRedirect : '/',
+        failureRedirect : '/login',
         failureFlash : true
     }),
     function(req, res) {
@@ -57,31 +57,20 @@ router.get('/login', function(req, res, next) {
         const client = await pool.connect();
         let error = req.flash('error');
         try {
-            const menu = await client.query("SELECT chuyenmuc.*, string_agg(DISTINCT chuyende.tencd, ':') lt FROM chuyenmuc INNER JOIN chuyende ON chuyende.idcm = chuyenmuc.idcm GROUP BY chuyenmuc.idcm")
-            // const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
-            // const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
-            // const theloai1 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 1 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai2 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 3 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai3 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 5 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai4 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 2 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
-            // const mostPopular = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 4")
-            // const mostReader = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 4")
-            // const loaitin = await client.query("SELECT * FROM loaitin ORDER BY idloaitin DESC")
-            res.render('pages/test',{
-                // title: 'News_TTB Website',
-                // latestNews: latestNews.rows,
-                menu: menu.rows,
-                // slide: slide.rows,
-                // theloai1: theloai1.rows,
-                // theloai2: theloai2.rows,
-                // theloai3: theloai3.rows,
-                // theloai4: theloai4.rows,
-                // popularPost: popularPost.rows,
-                // mostPopular: mostPopular.rows,
-                // mostReader: mostReader.rows,
-                // loaitin: loaitin.rows,
-                // error: error
+            res.render('pages/login',{
+            });
+        } finally {
+            client.release()
+        }
+    })().catch(e => console.log(e.stack))
+});
+
+router.get('/signup', function(req, res, next) {
+	(async() => {
+        const client = await pool.connect();
+        let error = req.flash('error');
+        try {
+            res.render('pages/signup',{
             });
         } finally {
             client.release()
