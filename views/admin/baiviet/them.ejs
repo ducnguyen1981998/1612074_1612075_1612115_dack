@@ -27,7 +27,7 @@
                                 label {
                                     color: #fff;
                                     font-size: 20px;
-                                    margin-top: 20px; 
+                                    margin-top: 20px;
                                 }
                             </style>
                             <div class="card-block">
@@ -45,8 +45,8 @@
                                         <select name="loaitin" class="form-control" id="controlSelect">
                                             <option value="">---Chọn loại tin---</option>
                                             <% loaitin.forEach(function (lt){ %>
-                                                <option value="<%=lt.idloaitin%>">
-                                                    <%=lt.tenloaitin%>
+                                                <option value="<%=lt.idcd%>">
+                                                    <%=lt.tencd%>
                                                 </option>
                                                 <% }) %>
                                         </select>
@@ -57,7 +57,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Nội dung</label>
-                                        <textarea id="ckeditor" name="noidung" class="form-control" rows="10" id="noidung"></textarea>
+                                        <textarea id="ckeditor" name="ckeditor" class="form-control" cols="80" rows="10" ></textarea>
+                                        <!-- <script>
+                                            CKEDITOR.replace('ckeditor');
+                                        </script> -->
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh</label>
@@ -88,6 +91,7 @@
         <script src="/admin/vendor/datatables-responsive/dataTables.responsive.js"></script>
         <!-- Custom Theme JavaScript -->
         <script src="/admin/dist/js/sb-admin-2.js"></script>
+
         <!-- ckeditor -->
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script type="text/javascript">

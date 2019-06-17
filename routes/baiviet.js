@@ -68,9 +68,12 @@ router.get('/danhsach', adminIsLoggedIn, function(req, res, next) {
         let error = req.flash('error');
         let success = req.flash('success')
         try {
+            const ad = await client.query("SELECT * FROM admin ad WHERE ad.idquantrivien= '"+ req.user.idquantrivien+"'" )
             const loaitin = await client.query('SELECT * FROM chuyende')
             const result = await client.query('SELECT * FROM baiviet bv, chuyende cd WHERE bv.idcdd = cd.idcd')
+
             res.render('admin/baiviet/danhsach',{
+                ad:ad.rows,
                 baiviet: result.rows,
                 loaitin: loaitin.rows,
                 title: 'News_TTB Website',
@@ -114,7 +117,7 @@ router.post('/thembv', adminIsLoggedIn, function(req, res, next) {
         req.checkBody('tacgia', 'Bài viết của ai?').notEmpty();
         req.checkBody('loaitin', 'Chưa chọn loại tin!').notEmpty();
         req.checkBody('tomtat', 'Tóm tắt bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
-        req.checkBody('noidung', 'Nội dung bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
+        req.checkBody('ckeditor', 'Nội dung bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
         let errors = req.validationErrors();
 
         if(errors){
@@ -136,15 +139,15 @@ router.post('/thembv', adminIsLoggedIn, function(req, res, next) {
                 const tacgia = req.body.tacgia;
                 const idloaitin = req.body.loaitin;
                 const tomtat = req.body.tomtat;
-                const noidung = req.body.noidung;
+                const noidung = req.body.ckeditor;
                 const img = req.body.img;
                 (async() => {
                     const client = await pool.connect()
                     try{
-                        const result = await client.query('SELECT MAX(idbaiviet) FROM baiviet')
-                        await client.query("INSERT INTO baiviet(idbaiviet, tieude, noidung, hinhanh, luotxem, ngaydang, idcdd) VALUES("+ result.rows[0].max +"+1, '" + tieude + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ moment().format() +"', '" + idloaitin + "')")
+                        const result = await client.query('SELECT MAX(idbv) FROM baiviet')
+                        await client.query("INSERT INTO baiviet(idbv, tieude, noidung, hinhanh, luotxem, ngaydang, idcdd) VALUES("+ result.rows[0].max +"+1, '" + tieude + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ moment().format() +"', '" + idloaitin + "')")
                         req.flash('success', 'Thêm thành công');
-                        res.redirect("/admin/baiviet/them");
+                        res.redirect("/admin/baiviet/danhsach");
                     } finally{
                         client.release()
                     }

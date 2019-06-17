@@ -85,11 +85,30 @@ router.post('/login', passport.authenticate('local-admin-login', {
 );
 
 router.get('/', adminIsLoggedIn, function(req, res) {
-	res.render('admin/partials/index', {
-		title: 'TTB',
-		user : req.user
-	});
-});
+  (async() => {
+        const client = await pool.connect();
+        let error = req.flash('error');
+        try {
+            const ad = await client.query("SELECT * FROM admin ad WHERE ad.idquantrivien= '"+ req.user.idquantrivien+"'" )
+            // const wr = await client.query("SELECT * FROM admin ad WHERE ad.chucvu= '"+ req.user.chucvu+"'" )
+            // const ed = await client.query("SELECT * FROM admin ad WHERE ad.chucvu= '"+ req.user.chucvu+"'" )
+            // const wr = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 3 ORDER BY bv.ngaydang DESC LIMIT 4")
+            // const ed = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 5 ORDER BY bv.ngaydang DESC LIMIT 4")
+            // const theloai4 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 2 ORDER BY bv.ngaydang DESC LIMIT 4")
+            // const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
+            // const mostPopular = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 4")
+            // const mostReader = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 4")
+            res.render('admin/partials/index',{
+                title: 'News_TTB Website',
+                user : req.user,
+                ad: ad.rows,
+
+            });
+        } finally {
+            client.release()
+        }
+    })().catch(e => console.log(e.stack))
+  });
 
 router.get('/dang-xuat', function(req, res) {
 	req.logout();

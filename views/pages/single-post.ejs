@@ -58,11 +58,15 @@
                              <div class="classynav">
                                  <ul>
                                    <% menu.forEach(function (i){%>
-                                     <li class="active"><a href="/danh-sach-cm/:<%i.idcm%>"><%= i.tencm%></a>
+                                     <li class="active"><a href="/danh-sach-cm/<%=i.idcm%>"><%= i.tencm%></a>
                                          <ul class="dropdown">
-                                           <% let tencd = i.tcd.split(':')%>
-                                           <% tencd.forEach(function (x){%>
-                                             <li><a href="/danh-sach-cd/:<%=x%>"> <%= x%></a></li>
+                                           <% let string = i.tcd.split(':')
+                                           %>
+                                           <% string.forEach(function (x){%>
+                                             <% let tencd= x.substring(x.indexOf('~')+1)
+                                                let idcd= x.substring(0,x.indexOf('~'))
+                                             %>
+                                             <li><a href="/danh-sach-cd/<%= idcd%>"><%= tencd%></a></li>
                                                <!-- <li><a tabindex="-1" href="/danh-sach/<%=x%>"><%= x%></a></li> -->
                                            <%})%>
                                          </ul>

@@ -98,37 +98,84 @@
                         <li>
                             <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Trang Chủ</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tin Tức<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/admin/theloai/danhsach"> QL Chuyên mục</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/loaitin/danhsach"> QL Chuyên đề</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/baiviet/danhsach"> QL Bài viết</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/baiviet/danhsach">QL Tag</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                        <% if(ad[0].chucvu=="ad"){%>
+                          <li>
+                              <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tin Tức<span class="fa arrow"></span></a>
+                              <ul class="nav nav-second-level">
+                                  <li>
+                                      <a href="/admin/theloai/danhsach"> QL Chuyên mục</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/loaitin/danhsach"> QL Chuyên đề</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/baiviet/danhsach"> QL Bài viết</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/baiviet/danhsach"> QL Tag </a>
+                                  </li>
+                              </ul>
+                              <!-- /.nav-second-level -->
+                          </li>
 
-                        <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tài Khoản<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html"> Thành Viên</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html"> Quản Trị Viên</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                          <li>
+                              <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tài Khoản<span class="fa arrow"></span></a>
+                              <ul class="nav nav-second-level">
+                                  <li>
+                                      <a href="flot.html"> Thành Viên</a>
+                                  </li>
+                                  <li>
+                                      <a href="morris.html"> Quản Trị Viên</a>
+                                  </li>
+                              </ul>
+                              <!-- /.nav-second-level -->
+                          </li>
+
+
+                        <% }else if(ad[0].chucvu=="wr"){ %>
+                          <li>
+                              <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tin Tức<span class="fa arrow"></span></a>
+                              <ul class="nav nav-second-level">
+                                  <li>
+                                      <a href="/admin/theloai/danhsach"> QL Chuyên mục</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/loaitin/danhsach"> QL Chuyên đề</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/baiviet/danhsach"> QL Bài viết</a>
+                                  </li>
+                                  <li>
+                                      <a href="/admin/baiviet/danhsach"> QL Tag </a>
+                                  </li>
+                              </ul>
+                              <!-- /.nav-second-level -->
+                          </li>
+                            <%
+                              }else if(ad[0].chucvu=="ed"){
+                            %>
+                            <li>
+                                <a href="#"><i class="fa fa-table fa-fw"></i> Quản Lý Tin Tức<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="/admin/theloai/danhsach"> QL Chuyên mục</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/loaitin/danhsach"> QL Chuyên đề</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/baiviet/danhsach"> QL Bài viết</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/baiviet/danhsach"> QL Tag </a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+
+                            <%
+                              }
+                            %>
 
                     </ul>
                 </div>

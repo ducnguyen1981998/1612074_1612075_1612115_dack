@@ -85,38 +85,24 @@ router.get('/', function(req, res, next) {
         const client = await pool.connect();
         let error = req.flash('error');
         try {
-            // const menu = await client.query("SELECT theloai.*, string_agg(DISTINCT loaitin.tenloaitin, ':') lt FROM theloai INNER JOIN loaitin ON loaitin.idtheloai = theloai.idtheloai GROUP BY theloai.idtheloai")
-            // const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
-            // const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
-            // const theloai1 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 1 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai2 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 3 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai3 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 5 ORDER BY bv.ngaydang DESC LIMIT 4")
-            // const theloai4 = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN loaitin lt ON lt.idloaitin = bv.idloaitin INNER JOIN theloai tl ON tl.idtheloai = lt.idtheloai AND tl.idtheloai = 2 ORDER BY bv.ngaydang DESC LIMIT 4")
+            //Bài viết mới nhất
            const newestPost = await client.query("SELECT *, current_date - ngaydang AS diftime FROM baiviet INNER JOIN chuyende ON idcdd=idcd ORDER BY diftime LIMIT 4")
-           const mostPopular = await client.query("SELECT bv.* FROM baiviet bv")
-           const mostReader = await client.query("SELECT * FROM baiviet WHERE luotxem IS NOT NULL ORDER BY luotxem DESC LIMIT 5")
-            // const randomPost = await client.query("SELECT * FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd=bv.idcdd")
-            // const loaitin = await client.query("SELECT * FROM loaitin ORDER BY idloaitin DESC")
-            // const menu= await client.query("SELECT * from chuyenmuc ORDER BY idcm ASC LIMIT 5")
-            const menu= await client.query("SELECT chuyenmuc.*,string_agg(DISTINCT chuyende.tencd, ':') tcd FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
-            // const menu1= await client.query("SELECT chuyenmuc.*,string_agg(DISTINCT chuyende.idcd, ':') tcd FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
-            res.render('pages/index',{
-                title: 'News_TTB Website',
-                // latestNews: latestNews.rows,
-                menu: menu.rows,
+           //Xem nhiều nhất
+           const mostPopularOfTuan = await client.query("SELECT * FROM baiviet INNER JOIN chuyende ON idcdd=idcd WHERE current_date - interval '5' day <= ngaydang  ORDER BY luotxem LIMIT 3")
+           //Xem nhiều
+           const mostReader = await client.query("SELECT * FROM baiviet INNER JOIN chuyende ON idcdd=idcd  WHERE luotxem IS NOT NULL ORDER BY luotxem DESC LIMIT 5")
+           // Top 10 chuyên mục mới nhất
+           //const newestPost = await client.query("SELECT *, current_date - ngaydang AS diftime FROM baiviet INNER JOIN chuyende ON idcdd=idcd ORDER BY diftime LIMIT 10")
 
-                // randomPost: randomPost.rows,
-                // chuyende:chuyende.rows,
-                // slide: slide.rows,
-                // theloai1: theloai1.rows,
-                // theloai2: theloai2.rows,
-                // theloai3: theloai3.rows,
-                // theloai4: theloai4.rows,
+            //MenuBar
+           const menu= await client.query("SELECT chuyenmuc.*,string_agg( distinct concat(chuyende.idcd ,'~',chuyende.tencd ),':') tcd  FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
+            res.render('pages/index',{
+                title: '1612069_1612074_1612115',
+                menu: menu.rows,
                 NewestPost: newestPost.rows,
-                mostPopular: mostPopular.rows,
+                mostPopular: mostPopularOfTuan.rows,
                 mostReader: mostReader.rows,
-                // loaitin: loaitin.rows,
-                // error: error
+                error: error
             });
         } finally {
             client.release()
@@ -130,7 +116,8 @@ router.get('/chi-tiet/:idcdd/:idbv', function(req, res, next) {
         const client = await pool.connect();
         let error = req.flash('error');
         try {
-            const menu= await client.query("SELECT chuyenmuc.*, string_agg(DISTINCT chuyende.tencd, ':') tcd FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
+          //MenuBar
+         const menu= await client.query("SELECT chuyenmuc.*,string_agg( distinct concat(chuyende.idcd ,'~',chuyende.tencd ),':') tcd  FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
             const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
             const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
             const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
@@ -164,29 +151,17 @@ router.get('/danh-sach-cd/:name', function(req, res, next) {
         const client = await pool.connect();
         let error = req.flash('error');
         try {
-            // const menu = await client.query("SELECT theloai.*, string_agg(DISTINCT loaitin.tenloaitin, ':') lt FROM theloai INNER JOIN loaitin ON loaitin.idtheloai = theloai.idtheloai GROUP BY theloai.idtheloai")
-            // const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
-            // const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
-            // const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
-            // const mostPopular = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 4")
-            // const mostReader = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 4")
-            // const loaitin = await client.query("SELECT * FROM loaitin ORDER BY idloaitin DESC")
-            const menu= await client.query("SELECT chuyenmuc.*, string_agg(DISTINCT chuyende.tencd, ':') tcd FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
+
+          //MenuBar
+         const menu= await client.query("SELECT chuyenmuc.*,string_agg( distinct concat(chuyende.idcd ,'~',chuyende.tencd ),':') tcd  FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
             // const result = await client.query("SELECT * FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd = bv.idcd AND cd.tencd = '" + req.params.name + "'")
-            const result = await client.query("SELECT bv.* FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd = bv.idcdd AND convertTVkdau(cd.tencd)= 'BONG DA'")
+            const result = await client.query("SELECT * FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd = bv.idcdd AND bv.idcdd="+req.params.name)
 
 
             res.render('pages/archive',{
-                // title: 'News_TTB Website',
-                // latestNews: latestNews.rows,
+
                 menu: menu.rows,
-                // slide: slide.rows,
-                // popularPost: popularPost.rows,
-                // mostPopular: mostPopular.rows,
-                // mostReader: mostReader.rows,
-                // loaitin: loaitin.rows,
-                // danhsach: result.rows,
-                // error: error,
+
                  result: result.rows,
                  dem:"1",
             });
@@ -202,25 +177,25 @@ router.post('/tim-kiem', (req, res, next) => {
         const client = await pool.connect();
         let error = req.flash('error');
         try {
-            const menu = await client.query("SELECT theloai.*, string_agg(DISTINCT loaitin.tenloaitin, ':') lt FROM theloai INNER JOIN loaitin ON loaitin.idtheloai = theloai.idtheloai GROUP BY theloai.idtheloai")
-            const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
-            const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
-            const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
-            const mostPopular = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 4")
-            const mostReader = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 4")
-            const loaitin = await client.query("SELECT * FROM loaitin ORDER BY idloaitin DESC")
-            const result = await client.query("SELECT DISTINCT idbaiviet, tacgia, tieude, tomtat, noidung, urlanh, luotxem, ngaydang, idloaitin FROM baiviet Where (tieude  LIKE '%"+ searchterm +"%') OR (tomtat  LIKE '%"+ searchterm +"%') OR (noidung  LIKE '%"+ searchterm +"%') ORDER BY idbaiviet")
+          //MenuBar
+         const menu= await client.query("SELECT chuyenmuc.*,string_agg( distinct concat(chuyende.idcd ,'~',chuyende.tencd ),':') tcd  FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
+         const latestNews = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 10")
+         const slide = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 6")
+         const popularPost = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 9")
+         const mostPopular = await client.query("SELECT * FROM baiviet ORDER BY ngaydang DESC LIMIT 4")
+         const mostReader = await client.query("SELECT * FROM baiviet ORDER BY luotxem DESC LIMIT 4")
+         const result = await client.query("SELECT DISTINCT idbv, tieude, noidung, hinhanh, luotxem, ngaydang, idcdd FROM baiviet Where (tieude  LIKE '%"+ searchterm +"%')  OR (noidung  LIKE '%"+ searchterm +"%') ORDER BY idbv")
            res.render('pages/search',{
-                title: 'News_TTB Website',
-                latestNews: latestNews.rows,
-                menu: menu.rows,
-                slide: slide.rows,
-                popularPost: popularPost.rows,
-                mostPopular: mostPopular.rows,
-                mostReader: mostReader.rows,
-                loaitin: loaitin.rows,
-                danhsach: result.rows,
-                error: error
+                // title: 'News_TTB Website',
+                // latestNews: latestNews.rows,
+                 menu: menu.rows,
+                // slide: slide.rows,
+                 popularPost: popularPost.rows,
+                 mostPopular: mostPopular.rows,
+                 mostReader: mostReader.rows,
+                // loaitin: loaitin.rows,
+                 danhsach: result.rows,
+                // error: error
             });
         } finally {
             client.release()
@@ -234,6 +209,30 @@ router.post('/tim-kiem', (req, res, next) => {
 
 router.get('/file-manager.html', function(req, res, next) {
   res.render('layouts/index', { title: 'Roxy Fileman for Node.js' });
+});
+
+router.get('/submit', function(req, res, next) {
+  (async() => {
+      const client = await pool.connect();
+      let error = req.flash('error');
+      try {
+
+        //MenuBar
+       const menu= await client.query("SELECT chuyenmuc.*,string_agg( distinct concat(chuyende.idcd ,'~',chuyende.tencd ),':') tcd  FROM chuyenmuc INNER JOIN chuyende ON chuyenmuc.idcm=chuyende.idcm GROUP BY chuyenmuc.idcm" )
+          // const result = await client.query("SELECT * FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd = bv.idcd AND cd.tencd = '" + req.params.name + "'")
+       const result = await client.query("SELECT * FROM baiviet bv INNER JOIN chuyende cd ON cd.idcd = bv.idcdd")
+
+
+          res.render('pages/test',{
+
+              menu: menu.rows,
+               result: result.rows,
+               dem:"1",
+          });
+      } finally {
+          client.release()
+      }
+  })().catch(e => console.log(e.stack))
 });
 
 module.exports = router

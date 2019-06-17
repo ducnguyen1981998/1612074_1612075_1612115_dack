@@ -68,11 +68,15 @@
                             <div class="classynav">
                                 <ul>
                                   <% menu.forEach(function (i){%>
-                                    <li class="active"><a href="/danh-sach-cm/:<%i.idcm%>"><%= i.tencm%></a>
+                                    <li class="active"><a href="/danh-sach-cm/<%=i.idcm%>"><%= i.tencm%></a>
                                         <ul class="dropdown">
-                                          <% let tencd = i.tcd.split(':')%>
-                                          <% tencd.forEach(function (x){%>
-                                            <li><a href="/danh-sach-cd/:<%=x%>"> <%= x%></a></li>
+                                          <% let string = i.tcd.split(':')
+                                          %>
+                                          <% string.forEach(function (x){%>
+                                            <% let tencd= x.substring(x.indexOf('~')+1)
+                                               let idcd= x.substring(0,x.indexOf('~'))
+                                            %>
+                                            <li><a href="/danh-sach-cd/<%= idcd%>"><%= tencd%></a></li>
                                               <!-- <li><a tabindex="-1" href="/danh-sach/<%=x%>"><%= x%></a></li> -->
                                           <%})%>
                                         </ul>
@@ -86,8 +90,8 @@
                         <div class="top-meta-data d-flex align-items-center">
                             <!-- Top Search Area -->
                             <div class="top-search-area">
-                                <form action="#" method="post">
-                                    <input type="search" name="top-search" id="topSearch" placeholder="Nhập và tìm kiếm ở đây...">
+                                <form action="/tim-kiem" method="post">
+                                    <input type="search" name="top-search" id="inputSearch" name="searchterm" placeholder="Nhập và tìm kiếm...">
                                     <button type="submit" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>
                                 </form>
                             </div>
@@ -135,7 +139,7 @@
 
 
                             <!-- Submit Video -->
-                            <a href="#" class="submit-video"><span><i class="fa fa-cloud-upload"></i></span> <span class="video-text">Submit Video</span></a>
+                            <a href="/submit" class="submit-video"><span><i class="fa fa-cloud-upload"></i></span> <span class="video-text">Submit Video</span></a>
                         </div>
                     </div>
                 </nav>
@@ -151,8 +155,8 @@
     <div class="hero-area owl-carousel">
         <!-- Single Blog Post -->
 
-
-        <div class="hero-blog-post bg-img bg-overlay" style="background-image: url(/img/<%= mostPopular[0].hinhanh%>);">
+        <% mostPopular.forEach(function(i){ %>
+        <div class="hero-blog-post bg-img bg-overlay" style="background-image: url(/img/<%= i.hinhanh%>);">
 
             <div class="container h-100">
                 <div class="row h-100 align-items-center">
@@ -161,16 +165,17 @@
                         <div class="post-content text-center">
                             <div class="post-meta" data-animation="fadeInUp" data-delay="100ms">
 
-                                <a href="#"><%= mostPopular[1].ngaydang%></a>
-                                <a href="/chi-tiet"><%= mostPopular[5].tieude%></a>
+                                <a href="#"><%= i.ngaydang%></a>
+                                <a href="/danh-sach-cd/<%= i.idcd%>"><%= i.tencd%></a>
                             </div>
-                            <a href="BongDa.html" class="post-title" data-animation="fadeInUp" data-delay="300ms"> <%= mostPopular[5].tieude%></a>
+                            <a href="/chi-tiet/<%= i.idcdd%>/<%= i.idbv%>" class="post-title" data-animation="fadeInUp" data-delay="300ms"> <%= i.tieude%></a>
                             <!-- <a href="video-post.html" class="video-play" data-animation="bounceIn" data-delay="500ms"><i class="fa fa-play"></i></a> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <% }) %>
 
     </div>
     <!-- ##### Hero Area End ##### -->
@@ -189,7 +194,7 @@
 <div class="single-sidebar-widget p-30">
                 <!-- Section Title -->
                 <div class="section-heading">
-                    <h5>XEM NHIỀU NHẤT</h5>
+                    <h5>XEM NHIỀU </h5>
                 </div>
 		<div class="featured-video-posts-slide owl-carousel">
 
@@ -202,7 +207,7 @@
                     </div>
                     <div class="post-content">
                         <a href="/chi-tiet/<%= i.idcdd%>/<%= i.idbv%>" class="post-title"><%= i.tieude%> </a>
-                        <a href="#" class="post-category"><%= i.luotxem%></a>
+                        <a href="/danh-sach-cd/<%=i.idcd%>" class="post-category"><%= i.tencd%></a>
                          <a href="#" class="post-time"><%= i.ngaydang%></a>
                     </div>
                 </div>
@@ -257,7 +262,7 @@
                     <div class="single-trending-post">
                         <a href="/chi-tiet/<%= i.idcdd%>/<%= i.idbv%>" target="_blank"><img src="/img/<%= i.hinhanh%>" alt="logo" /></a>
                         <div class="post-content">
-                            <a href="/danh-sach-cd/:<%=i.tencd%>" class="post-cata"><%=i.tencd%></a>
+                            <a href="/danh-sach-cd/<%=i.idcd%>" class="post-cata"><%=i.tencd%></a>
                            <!--  <a href="#" class="post-datetime">22/4/2019</a> -->
                             <a href="/chi-tiet/<%= i.idcdd%>/<%= i.idbv%>" class="post-title"><%=i.tieude%></a>
                         </div>
