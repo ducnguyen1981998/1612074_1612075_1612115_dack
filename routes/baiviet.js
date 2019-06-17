@@ -94,9 +94,11 @@ router.get('/them', adminIsLoggedIn, function(req, res, next){
         let success = req.flash('success')
 
         try {
+
             const theloai = await client.query('SELECT * FROM chuyenmuc')
             const loaitin = await client.query('SELECT * FROM chuyende')
             res.render('admin/baiviet/them',{
+                ad:ad.rows,
                 theloai: theloai.rows,
                 loaitin: loaitin.rows,
                 title: 'News_TTB Website',
@@ -168,14 +170,16 @@ router.get('/sua/:id', adminIsLoggedIn, function(req, res, next){
         let success = req.flash('success')
 
         try {
+            const ad = await client.query("SELECT * FROM admin ad WHERE ad.idquantrivien= '"+ req.user.idquantrivien+"'" )
             const theloai = await client.query('SELECT * FROM chuyenmuc')
             const loaitin = await client.query('SELECT * FROM chuyende')
             const result = await client.query('SELECT * FROM  baiviet bv, chuyende lt WHERE bv.idcdd = lt.idcd AND bv.idbv = ' + req.params.id)
             res.render('admin/baiviet/sua',{
+                ad:ad.rows,
                 theloai: theloai.rows,
                 loaitin: loaitin.rows,
                 baiviet: result.rows[0],
-                title: 'News_TTB Website',
+                title: 'UPDATE',
                 user : req.user,
                 error: error,
                 success: success
