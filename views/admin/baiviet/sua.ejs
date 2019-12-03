@@ -27,7 +27,7 @@
                                 label {
                                     color: #fff;
                                     font-size: 20px;
-                                    margin-top: 20px; 
+                                    margin-top: 20px;
                                 }
                             </style>
                             <div class="card-block">
@@ -37,18 +37,14 @@
                                         <input class="form-control" name="tieude" placeholder="Nhập vào tiêu đề" value="<%=baiviet.tieude%>">
                                     </div>
                                     <div class="form-group">
-                                        <label>Tác giả</label>
-                                        <input id="test" class="form-control" name="tacgia" placeholder="Tác giả" value="<%=baiviet.tacgia%>">
-                                    </div>
-                                    <div class="form-group">
                                         <label>Loại tin</label>
                                         <select name="loaitin" class="form-control" id="controlSelect">
-                                            <option value="<%=baiviet.idloaitin%>"><%=baiviet.tenloaitin%></option>
+                                            <option value="<%=baiviet.idcdd%>"><%=baiviet.tencd%></option>
                                             <% loaitin.forEach(function (lt){ %>
-                                                <% if(lt.idloaitin === baiviet.idloaitin){%>
-                                                    <option value="<%=lt.idloaitin%>" style="display: none;"><%=lt.tenloaitin%></option>
+                                                <% if(lt.idcd === baiviet.idcdd){%>
+                                                    <option value="<%=lt.idcd%>" style="display: none;"><%=lt.tencd%></option>
                                                 <%} else{%>
-                                                    <option value="<%=lt.idloaitin%>"><%=lt.tenloaitin%></option>
+                                                    <option value="<%=lt.idcd%>"><%=lt.tencd%></option>
                                                 <%}%>
                                             <% }) %>
                                         </select>
@@ -61,7 +57,7 @@
                                         <label>Nội dung</label>
                                         <textarea id="ckeditor" name="noidung" class="form-control" rows="10" id="noidung"><%=baiviet.noidung%></textarea>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>Ảnh</label>
                                         <br>
                                         <label>
@@ -74,7 +70,7 @@
                                             </div>
                                             <div class="message" style="color: #fff;"></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <button type="reset" class="btn btn-default">Làm mới</button>
                                     <button type="submit" value="Upload" class="btn btn-primary submit">Sửa</button>
                                 </form>

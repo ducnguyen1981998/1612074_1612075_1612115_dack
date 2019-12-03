@@ -155,7 +155,9 @@
                         <div class="section-heading">
                             <h5>Great to have you back!</h5>
                         </div>
-
+                        <% if ( expressFlash.length > 0 ) { %>
+                          <p style="{color: 'red';}"><%= expressFlash %> </p>
+                        <% } %>
                         <form action="/dang-nhap" method="post">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email or User Name">
@@ -172,10 +174,9 @@
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox mr-sm-2">
                                     <button type="submit" class="btn mag-btn mt-30">Login</button>
-                                    <a href="/signup">Signup</a>
+                                    <button  class="btn mag-btn mt-30"><a href="/signup">Signup</a></button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -192,7 +193,7 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="footer-widget">
                         <!-- Logo -->
-                        <a href="index.html" class="foo-logo"><img src="img/core-img/logo2.png" alt=""></a>
+                        <a href="index.html" class="foo-logo"><img src="img/core-img/logo.png" alt=""></a>
                         <p>Tin tức nhanh nhất, mới nhất, nóng bỏng nhất</p>
                         <div class="footer-social-info">
                             <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>

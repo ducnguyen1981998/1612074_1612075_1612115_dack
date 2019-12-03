@@ -3,6 +3,12 @@ const router = new Router()
 const pool = require('../model')
 require('../config/passport');
 const passport = require('passport');
+// var session = require('express-session');
+// var cookieParser = require('cookie-parser');
+// var flash = require('connect-flash');
+// router.use(cookieParser('secret'));
+// router.use(session({cookie: { maxAge: 60000 }}));
+// router.use(flash());
 
 router.post('/dang-nhap', passport.authenticate('local-dang-nhap', {
         successRedirect : '/',
@@ -22,8 +28,8 @@ router.post('/dang-nhap', passport.authenticate('local-dang-nhap', {
 );
 
 router.post('/dang-ky', passport.authenticate('local-dang-ky', {
-    successRedirect : '/',
-    failureRedirect : '/',
+    successRedirect : '/login',
+    failureRedirect : '/signup',
     failureFlash : true,
     // session: false
 }));
@@ -55,9 +61,10 @@ function notLoggedIn(req, res, next) {
 router.get('/login', function(req, res, next) {
 	(async() => {
         const client = await pool.connect();
-        let error = req.flash('error');
+        // let error = req.flash('error');
         try {
             res.render('pages/login',{
+              expressFlash: req.flash('error')
             });
         } finally {
             client.release()
@@ -68,9 +75,10 @@ router.get('/login', function(req, res, next) {
 router.get('/signup', function(req, res, next) {
 	(async() => {
         const client = await pool.connect();
-        let error = req.flash('error');
+        // let error = req.flash('error');
         try {
             res.render('pages/signup',{
+              expressFlash: req.flash('error')
             });
         } finally {
             client.release()

@@ -10,7 +10,6 @@ const fileman = require('./fileman');
 module.exports = (app) => {
 	app.use
 	app.use('/', home)
-
 	app.use('/admin', admin)
   	app.use('/admin/theloai', theloai)
    	app.use('/admin/loaitin', loaitin)

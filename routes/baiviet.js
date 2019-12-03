@@ -14,7 +14,7 @@ const fs = require('fs');
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
-  destination: './public/Uploads/Images/',
+  destination: './public/img/',
   filename: function(req, file, cb){
     cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
@@ -70,7 +70,7 @@ router.get('/danhsach', adminIsLoggedIn, function(req, res, next) {
         try {
             const ad = await client.query("SELECT * FROM admin ad WHERE ad.idquantrivien= '"+ req.user.idquantrivien+"'" )
             const loaitin = await client.query('SELECT * FROM chuyende')
-            const result = await client.query('SELECT * FROM baiviet bv, chuyende cd WHERE bv.idcdd = cd.idcd')
+            const result = await client.query('SELECT * FROM baiviet bv, chuyende cd WHERE bv.idcdd = cd.idcd ORDER BY bv.idbv DESC')
 
             res.render('admin/baiviet/danhsach',{
                 ad:ad.rows,
@@ -94,7 +94,7 @@ router.get('/them', adminIsLoggedIn, function(req, res, next){
         let success = req.flash('success')
 
         try {
-
+            const ad = await client.query("SELECT * FROM admin ad WHERE ad.idquantrivien= '"+ req.user.idquantrivien+"'" )
             const theloai = await client.query('SELECT * FROM chuyenmuc')
             const loaitin = await client.query('SELECT * FROM chuyende')
             res.render('admin/baiviet/them',{
@@ -116,7 +116,7 @@ router.get('/them', adminIsLoggedIn, function(req, res, next){
 router.post('/thembv', adminIsLoggedIn, function(req, res, next) {
     upload(req, res, function(err){
         req.checkBody('tieude', 'Tiêu đề bài viết không hợp lệ, vui lòng kiểm tra lại!').notEmpty();
-        req.checkBody('tacgia', 'Bài viết của ai?').notEmpty();
+        // req.checkBody('tacgia', 'Bài viết của ai?').notEmpty();
         req.checkBody('loaitin', 'Chưa chọn loại tin!').notEmpty();
         req.checkBody('tomtat', 'Tóm tắt bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
         req.checkBody('ckeditor', 'Nội dung bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
@@ -138,16 +138,17 @@ router.post('/thembv', adminIsLoggedIn, function(req, res, next) {
                 res.redirect('/admin/baiviet/them');
             } else{
                 const tieude = req.body.tieude;
-                const tacgia = req.body.tacgia;
+                // const tacgia = req.body.tacgia;
                 const idloaitin = req.body.loaitin;
                 const tomtat = req.body.tomtat;
+                //Nộidung
                 const noidung = req.body.ckeditor;
                 const img = req.body.img;
                 (async() => {
                     const client = await pool.connect()
                     try{
                         const result = await client.query('SELECT MAX(idbv) FROM baiviet')
-                        await client.query("INSERT INTO baiviet(idbv, tieude, noidung, hinhanh, luotxem, ngaydang, idcdd) VALUES("+ result.rows[0].max +"+1, '" + tieude + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ moment().format() +"', '" + idloaitin + "')")
+                        await client.query("INSERT INTO baiviet(idbv, tieude, noidung, hinhanh, luotxem, tomtat, idcdd, idtacgia) VALUES("+ result.rows[0].max +"+1, '" + tieude + "', '" + noidung + "', '"+ req.file.filename +"', '0', '"+ tomtat +"', '" + idloaitin + "','" +req.user.idquantrivien + "')")
                         req.flash('success', 'Thêm thành công');
                         res.redirect("/admin/baiviet/danhsach");
                     } finally{
@@ -193,7 +194,6 @@ router.get('/sua/:id', adminIsLoggedIn, function(req, res, next){
 router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
     upload(req, res, function(err){
         req.checkBody('tieude', 'Tiêu đề bài viết không hợp lệ, vui lòng kiểm tra lại!').notEmpty();
-        req.checkBody('tacgia', 'Bài viết của ai?').notEmpty();
         req.checkBody('loaitin', 'Chưa chọn loại tin!').notEmpty();
         req.checkBody('tomtat', 'Tóm tắt bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
         req.checkBody('noidung', 'Nội dung bài viết không hợp lệ, vui lòng kiểm tra lai!').notEmpty();
@@ -215,7 +215,6 @@ router.post('/sua/:id', adminIsLoggedIn, function(req, res, next) {
                 // res.redirect('back');
                 const id = req.params.id;
                 const tieude = req.body.tieude;
-                const tacgia = req.body.tacgia;
                 const idloaitin = req.body.loaitin;
                 const tomtat = req.body.tomtat;
                 const noidung = req.body.noidung;

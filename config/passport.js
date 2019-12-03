@@ -2,7 +2,8 @@ const validator = require('express-validator');
 var passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt-nodejs');
-const pool = require('../model')
+const pool = require('../model');
+// const flash= require('flash');
 
 pool.connect( (err, client, done) => {
 
@@ -29,7 +30,7 @@ pool.connect( (err, client, done) => {
       req.checkBody('password', 'Mật khẩu không hợp lệ, phải ít nhất từ ' + 6 + ' ký tự trở lên, vui lòng kiểm tra lại.').notEmpty().isLength({
         min: 6
       });
-      req.checkBody('password', 'Xác nhận mật khẩu không giống nhau, vui lòng kiểm tra lại.').equals(req.body.confirm);
+      req.checkBody('password', 'Xác nhận mật khẩu không giống nhau, vui lòng kiểm tra lại.').equals(req.body.confirm_password);
 
       let errors = req.validationErrors();
       if(errors){

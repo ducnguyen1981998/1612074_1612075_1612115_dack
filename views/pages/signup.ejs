@@ -20,6 +20,7 @@
 </head>
 
 <body>
+
     <!-- Preloader -->
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="spinner">
@@ -155,8 +156,10 @@
                         <div class="section-heading">
                             <h5>Great to have you back!</h5>
                         </div>
-
-                        <form action="/dang-ky" method="post">
+                        <% if ( expressFlash.length > 0 ) { %>
+                          <p style="{color: 'red';}"><%= expressFlash %> </p>
+                        <% } %>
+                        <form action="/dang-ky" method="post" name="register">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email ">
                             </div>
@@ -167,7 +170,7 @@
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Confirm Password">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox mr-sm-2">
@@ -178,12 +181,14 @@
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox mr-sm-2">
 
-                                    <a href="/login">Login</a>
-                                    <button type="submit" class="btn mag-btn mt-30">Signup</button>
+                                    <!-- <a href="/login">Login</a> -->
+                                    <button  class="btn mag-btn mt-30"><a href="/login">Login</a></button>
+                                    <button type="submit" id="submit" class="btn mag-btn mt-30">Signup</button>
                                 </div>
                             </div>
 
                         </form>
+                        <!-- <script src="js/register.js"></script> -->
                     </div>
                 </div>
             </div>
@@ -199,7 +204,7 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="footer-widget">
                         <!-- Logo -->
-                        <a href="index.html" class="foo-logo"><img src="img/core-img/logo2.png" alt=""></a>
+                        <a href="index.html" class="foo-logo"><img src="img/core-img/logo.png" alt=""></a>
                         <p>Tin tức nhanh nhất, mới nhất, nóng bỏng nhất</p>
                         <div class="footer-social-info">
                             <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
